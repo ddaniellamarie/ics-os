@@ -79,6 +79,9 @@ void drawBoard(){
     drawRectangle(4,70,30,20, BROWN);                                           //this will draw the head of player 1
     sprintf(temp, "%d", items[0]);
     write_text(temp,12,75,WHITE,0);
+    drawRectangle(34,70,30,20, BROWN);                                           //this will draw the head of player 1
+    sprintf(temp, "%d", items[0]);
+    write_text(temp,12,75,WHITE,0);
 
     z=1;
     for(x=39; x<270; x+=35){                                                    //the houses of player 1
