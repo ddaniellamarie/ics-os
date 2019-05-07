@@ -1,5 +1,7 @@
 ICS-OS Commands
 ---------------
+883:   if (strcmp(u, "hello") == 0){
+add- Adds two integers. Args: <num1> <num2>
 cc- Builds a C program (invokes tcc.exe). Args: <name.exe> <name.c>
 cd- Changes working directory. Args: <directory>
 cls- Clears the screen. 
