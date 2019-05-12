@@ -1,7 +1,8 @@
 /*
-    Perico Dan B. Dionisio
-    Coleen Bobilles
-    CMSC 125 ST-2L
+    Daniella Marie Costales
+    Andrea Nicole Cuevas
+    CMSC 125 T-1L
+    2nd Sem AY 2018-2019
 */
 
 #include "../../sdk/dexsdk.h"
@@ -36,9 +37,12 @@
 #define DARK_BROWN 32
 
 
+
 char given[6][6] = {"001000","000600","100030","040002","002000","000200"}; //0 if empty circle
 char guide[6][6] = {"00-000","000-00","-000-0","0-000-","00-000","000-00"};
 char answ[6][6]={"261543","534621","126435","345162","412356","653214"}; //0 if position has given
+
+
 
 /*  "Erases" the screen given the starting point and the width & height
     (from the blacjack application in the ics-os) */
@@ -55,8 +59,8 @@ void drawMenu(){
     write_text("SUDOKU",41,41,WHITE,1);
 
     write_text("[Enter] Start",40,120,WHITE,0);
-    write_text("[Esc] Quit",40,140,WHITE,0);
-    write_text("[i] Instructions", 40, 160, WHITE, 0);
+	write_text("[q] Quit",40,140,WHITE,0);
+	write_text("[i] Instructions", 40, 160, WHITE, 0);
 }
 
 
@@ -164,23 +168,27 @@ int move(char a, int x, int y){
         drawBoard();
         highlight(x,y);
         // move(a,x,y);
+        return 0;        
     }else if(a == left_key && x!=4){
         x = x - 34;
         drawBoard();
         highlight(x,y);
-        // move(a,x,y);
+        move(a,x,y);
+        return 0;        
     }else if(a == up_key && y!=4){
         y = y - 34;
         drawBoard();
         highlight(x,y);
-        // move(a,x,y);
+        move(a,x,y);
+        return 0;        
     }else if(a == down_key && y<=170){
         y = y + 34;
         drawBoard();
         highlight(x,y);
-        // move(a,x,y);
+        move(a,x,y);
+        return 0;        
     }else if(a == quit){
-        return 1;   
+        return 1;        
     }else{
         checkin(a,x,y);
     }
@@ -229,70 +237,30 @@ int startGame(){
     char pressed;
     //getNames();
     drawRectangle(0,0,320,220, BLACK);
-    while(check!=1){
+    do{
         drawBoard();
         check=move(pressed,4,4);    
-    }
-
-
-    
-    
+    } while(check!=1);   
 
     return 1;
 }
 
-
-
-
 /*
-    Displays MECHANICS page given the page number
+    Houses an array of strings named line;
 */
-char mechanics(char line[][35], int pageNo){
-    int i,a;
-    int linebreak = 20, skip;
-    char pressed;
-
-    drawRectangle(0,0,320,220, BLACK);
-    if(pageNo==1){
-        write_text(line[3], 31, 21, WHITE, 0);
-        for(i=4; i<=7; i++){
-            write_text(line[i], 30, 20+linebreak, WHITE, 0);
-            linebreak+=20;
-        }
-    } else {
-        write_text(line[8], 31, 21, WHITE, 0);
-        for(a=1; a<=6; a++){
-            skip=a*6;
-            if(pageNo==a+1){
-                for(i=3+skip; i<=8+skip; i++){
-                    write_text(line[i], 30, 20+linebreak, WHITE, 0);
-                    linebreak+=20;
-                }
-            }
-        }
-    }
-
-    write_text(line[2], 30, 180, WHITE, 0); //main menu
-    if(pageNo!=1) write_text(line[0], 155, 180, WHITE, 0); //back
-    if(pageNo!=7) write_text(line[1], 230, 180, WHITE, 0); //next
-
-    pressed = (char)getch();
-    return pressed;
-}
-
 void instruction(){
-    char line[10][35];
-    char pressed;
+	char line[45][35];
+	char pressed;
     int linebreak = 20, i;
 
-    strcpy(line[0], "MECHANICS");
-    strcpy(line[1], "Move around the board with ");
-    strcpy(line[2], "[w] up, [a] left, ,[s] down");
-    strcpy(line[3], "[d] right. Press the number to");
-    strcpy(line[4], "put in. The goal is to arrange");
-    strcpy(line[5], "the numbers with no duplicate");
-    strcpy(line[6], "in a row, in a column, and "); 
-    strcpy(line[7], "in a block.");
+	strcpy(line[0], "MECHANICS");
+	strcpy(line[1], "Move around the board with ");
+	strcpy(line[2], "[a] left, [d] right, [w] up,");
+	strcpy(line[3], "[s] down. Press the number to");
+	strcpy(line[4], "put in. The goal is to arrange");
+    strcpy(line[5], "the numbers with no duplicates");
+	strcpy(line[6], "of the same number in a row,");  //KAYA ATA PITONG LINES??????????
+	strcpy(line[7], "in a column, and in a block.");
     
     strcpy(line[8], "                [m]main menu");
 
@@ -308,7 +276,6 @@ void instruction(){
     } while(pressed != main_menu);
 }
 
-
 main(){
     char pressed;
     set_graphics(VGA_320X200X256);
@@ -322,9 +289,10 @@ main(){
         else if(pressed=='i'){
             instruction();
         }
-    }while(pressed!=27);
+    }while(pressed!=quit);
     //Return ICS-OS graphics before exiting
-    set_graphics(VGA_TEXT80X25X16);
-    clrscr();
-    exit(0);
+	set_graphics(VGA_TEXT80X25X16);
+	clrscr();
+	exit(0);
+return 0;
 }
