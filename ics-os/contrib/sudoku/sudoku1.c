@@ -39,6 +39,7 @@
 
 
 char given[6][6] = {"001000","000600","100030","040002","002000","000200"}; //0 if empty circle
+char edit[6][6] = {"001000","000600","100030","040002","002000","000200"}; //0 if empty circle
 char guide[6][6] = {"00-000","000-00","-000-0","0-000-","00-000","000-00"};
 char answ[6][6]={"261543","534621","126435","345162","412356","653214"}; //0 if position has given
 
@@ -115,7 +116,7 @@ void highlight(int x, int y){
 void checkin(char a, int x, int y){
     if(a=='1'||a=='2'||a=='3'||a=='4'||a=='5'||a=='6'||a=='7'||a=='8'||a=='9'){
         if(guide[((y-4)/34)][((x-4)/34)]!='-'){
-            given[((y-4)/34)][((x-4)/34)]=a;
+            edit[((y-4)/34)][((x-4)/34)]=a;
         }
     }
 } //DONE
@@ -125,7 +126,7 @@ int checkIfFinish(){
     int x,y;
     for(x=0; x<6; x++){
         for(y=0; y<6; y++){
-            if(given[x][y]=='0'){
+            if(edit[x][y]=='0'){
                 return 0;
             }
         }
@@ -137,7 +138,7 @@ int checkIfCorrect(){
     int x,y;
     for(x=0; x<6; x++){
         for(y=0; y<6; y++){
-            if(given[x][y]!=answ[x][y]){
+            if(edit[x][y]!=answ[x][y]){
                 return 0;
             }
         }
@@ -155,7 +156,7 @@ int win_screen(){
 
 void displayStat(){
     write_text("Table",215,109,WHITE,0);
-    write_text("Table",205,119,WHITE,0);
+    write_text("Incorrect",205,119,WHITE,0);
 
 }
 

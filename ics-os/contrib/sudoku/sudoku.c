@@ -37,6 +37,7 @@
 
 
 char given[6][6] = {"001000","000600","100030","040002","002000","000200"}; //0 if empty circle
+char edit[6][6] = {"001000","000600","100030","040002","002000","000200"};
 char guide[6][6] = {"00-000","000-00","-000-0","0-000-","00-000","000-00"};
 char answ[6][6]={"261543","534621","126435","345162","412356","653214"}; //0 if position has given
 
@@ -147,12 +148,16 @@ int win_screen(){
     drawRectangle(0,0,320,220, BLACK);
     write_text("You won! Good for you.",10,41,WHITE,1);
     write_text("[q] Quit",10,160,WHITE,0);
+    p = getchar();
+    if(p==quit){
+        return 1;
+    }
 
 }
 
 void displayStat(){
     write_text("Table",215,109,WHITE,0);
-    write_text("Table",205,119,WHITE,0);
+    write_text("Incorrect",205,119,WHITE,0);
 
 }
 
@@ -188,7 +193,9 @@ int move(char a, int x, int y){
     if (checkIfFinish()!=0){
         if(checkIfCorrect()!=0){
             char p;
-            win_screen();
+            if(win_screen()==1){
+                return 1;
+            }
         }else{
             displayStat();
             move(a,x,y);
@@ -226,6 +233,7 @@ int quit_screen(){
 int startGame(){
     //int currentx = 49;
     int i=0;
+    int x, y;
     int check=0;
     char pressed;
     //getNames();
@@ -234,11 +242,15 @@ int startGame(){
         drawBoard();
         check=move(pressed,4,4);    
     }
+    for(x=0; x<6; x++){
+        for(y=0; y<6; y++){
+            given[x][y]=edit[x][y];
+            }
+        }
 
 
     
     
-
     return 1;
 }
 
