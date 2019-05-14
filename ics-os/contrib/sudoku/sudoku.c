@@ -35,11 +35,11 @@
 #define DARK_GREEN 16
 #define DARK_BROWN 32
 
-
-char given[6][6] = {"001000","000600","100030","040002","002000","000200"}; //0 if empty circle
-char edit[6][6] = {"001000","000600","100030","040002","002000","000200"};
-char guide[6][6] = {"00-000","000-00","-000-0","0-000-","00-000","000-00"};
-char answ[6][6]={"261543","534621","126435","345162","412356","653214"}; //0 if position has given
+int b = 0;
+char given[2][6][6] = {{"001000","000600","100030","040002","002000","000200"},{"350000","064000","010300","002040","000430","000056"},{"430000", "000001", "042000", "000020", "050204", "000500"}}; //0 if empty circle
+char edit[2][6][6] = {{"001000","000600","100030","040002","002000","000200"},{"350000","064000","010300","002040","000430","000056"},{"430000", "000001", "042000", "000020", "050204", "000500"}};
+char guide[2][6][6] = {{"00-000","000-00","-000-0","0-000-","00-000","000-00"},{"--0000","0--000","0-0-00","00-0-0","000--0","0000--"},{"--0000", "00000-", "0--000", "0000-0", "0-0-0-", "000-00"}};
+char answ[2][6][6]={{"261543","534621","126435","345162","412356","653214"},{"351624","264513","415362","632145","526431","143256"},{"431652", "625341", "542136", "316425", "153264", "264513"}}; //0 if position has given
 
 /*  "Erases" the screen given the starting point and the width & height
     (from the blacjack application in the ics-os) */
@@ -84,10 +84,10 @@ void drawBoard(){
         for(x=4; x<204; x+=34){
             if ((x < 102 && y <= 68 )||(x < 102 && y >= 136 ) || (x > 102 && y > 68 && y < 136)   ){drawRectangle(x,y,30,30, MAROON);}
             else {drawRectangle(x,y,30,30, RED);}
-            if(given[((y-4)/34)][((x-4)/34)]=='0'){
+            if(given[b][((y-4)/34)][((x-4)/34)]=='0'){
                 sprintf(temp, "%c", '-');    
             }else{
-                sprintf(temp, "%c", given[((y-4)/34)][((x-4)/34)]);
+                sprintf(temp, "%c", given[b][((y-4)/34)][((x-4)/34)]);
             }
             write_text(temp,x+1,y+2,WHITE,0);
             z++;
@@ -100,10 +100,10 @@ void drawBoard(){
 void highlight(int x, int y){
     char temp[1];
     drawRectangle(x,y,30,30, YELLOW);
-    if(given[((y-4)/34)][((x-4)/34)]=='0'){
+    if(given[b][((y-4)/34)][((x-4)/34)]=='0'){
         sprintf(temp, "%c", '-');    
      }else{
-         sprintf(temp, "%c", given[((y-4)/34)][((x-4)/34)]);
+         sprintf(temp, "%c", given[b][((y-4)/34)][((x-4)/34)]);
     }
     write_text(temp,x+1,y+2,WHITE,0);
 } //DONE
@@ -112,8 +112,8 @@ void highlight(int x, int y){
 /*will check if it can update or not edit function*/
 void checkin(char a, int x, int y){
     if(a=='1'||a=='2'||a=='3'||a=='4'||a=='5'||a=='6'||a=='7'||a=='8'||a=='9'){
-        if(guide[((y-4)/34)][((x-4)/34)]!='-'){
-            given[((y-4)/34)][((x-4)/34)]=a;
+        if(guide[b][((y-4)/34)][((x-4)/34)]!='-'){
+            given[b][((y-4)/34)][((x-4)/34)]=a;
         }
     }
 } //DONE
@@ -123,7 +123,7 @@ int checkIfFinish(){
     int x,y;
     for(x=0; x<6; x++){
         for(y=0; y<6; y++){
-            if(given[x][y]=='0'){
+            if(given[b][x][y]=='0'){
                 return 0;
             }
         }
@@ -135,7 +135,7 @@ int checkIfCorrect(){
     int x,y;
     for(x=0; x<6; x++){
         for(y=0; y<6; y++){
-            if(given[x][y]!=answ[x][y]){
+            if(given[b][x][y]!=answ[b][x][y]){
                 return 0;
             }
         }
@@ -148,9 +148,14 @@ int win_screen(){
     drawRectangle(0,0,320,220, BLACK);
     write_text("You won! Good for you.",10,41,WHITE,1);
     write_text("[q] Quit",10,160,WHITE,0);
+    write_text("Press Any Key To Continue",25,160,WHITE,0);
+    b++;
     p = getchar();
     if(p==quit){
         return 1;
+    }else{
+        drawRectangle(0,0,320,220, BLACK);
+        return 0;
     }
 
 }
@@ -242,9 +247,10 @@ int startGame(){
         drawBoard();
         check=move(pressed,4,4);    
     }
+    b = 0;
     for(x=0; x<6; x++){
         for(y=0; y<6; y++){
-            given[x][y]=edit[x][y];
+            given[b][x][y]=edit[b][x][y];
             }
         }
 
@@ -300,7 +306,7 @@ void instruction(){
 
     strcpy(line[0], "MECHANICS");
     strcpy(line[1], "Move around the board with ");
-    strcpy(line[2], "[w] up, [a] left, ,[s] down");
+    strcpy(line[2], "[w] up, [b] left, ,[s] down");
     strcpy(line[3], "[d] right. Press the number to");
     strcpy(line[4], "put in. The goal is to arrange");
     strcpy(line[5], "the numbers with no duplicate");
