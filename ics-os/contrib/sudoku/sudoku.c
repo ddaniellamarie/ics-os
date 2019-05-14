@@ -1,7 +1,8 @@
 /*
-    Perico Dan B. Dionisio
-    Coleen Bobilles
-    CMSC 125 ST-2L
+    Daniella Marie Costales
+    Andrea Nicole Cuevas
+    CMSC 125 - T-1L
+    2ND SEM AY 2018-2019
 */
 
 #include "../../sdk/dexsdk.h"
@@ -81,7 +82,11 @@ void drawBoard(){
     
     for(y=4; y<204; y+=34){
         for(x=4; x<204; x+=34){
-            drawRectangle(x,y,30,30, BROWN);
+            if ((x < 102 && y <= 68 )||(x < 102 && y >= 136 ) || (x > 102 && y > 68 && y < 136) ){
+                drawRectangle(x,y,30,30, MAROON);
+            }else {
+                drawRectangle(x,y,30,30, RED);
+            }
             if(given[((y-4)/34)][((x-4)/34)]=='0'){
                 sprintf(temp, "%c", '-');    
             }else{
