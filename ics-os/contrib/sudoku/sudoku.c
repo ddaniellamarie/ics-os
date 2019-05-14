@@ -155,9 +155,7 @@ int win_screen(){
 }
 
 void displayStat(){
-    write_text("Table",215,109,WHITE,0);
-    write_text("Table",205,119,WHITE,0);
-
+    write_text("Not quite right",205,119,WHITE,0);
 }
 
 /*for moving*/
